@@ -1,1 +1,1 @@
-from .music-art-gen import *
+from .music_art_gen import *
