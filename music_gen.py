@@ -79,6 +79,8 @@ def get_first_note(x_cor: int, y_cor: int) -> dict:
 
     :return: A dictionary of the note in str and int form, as well as its octave
     """
+
+
     start_note = notes[x_cor // 41]
     if y_cor in range(-250, 251):
         start_octave = 4
@@ -97,6 +99,7 @@ def get_note(x_cor: int, y_cor: int) -> dict:
 
     :return: A dictionary of the note in str and int form, as well as its octave
     """
+
     note = notes[x_cor // 71]
     if y_cor in range(-250, 251):
         octave = 4
@@ -106,6 +109,13 @@ def get_note(x_cor: int, y_cor: int) -> dict:
         octave = 3
     return {"note_num": note_to_number(note, octave), "note_str": note, "octave": octave}
 
+def tempo_gen(coordinates: list) -> int:
+    total_difference = 0
+    for n in range(1, len(coordinates)):
+        total_difference += coordinates[n][0] - coordinates[n - 1][0]
+    total_difference /= len(coordinates)
+    return total_difference * -1 + 120
+
 def song_gen(coordinates: list):
     """
     Generate a song from an array of coordinates
@@ -114,18 +124,6 @@ def song_gen(coordinates: list):
 
     :return: None
     """
-
-    print(notes)
-    first_coordinate = coordinates[0]
-    start_note = get_first_note(first_coordinate[0], first_coordinate[1])
-
-    new_notes = key_creator(start_note["note_str"])
-    print(f"Chosen Key Notes: {new_notes}")
-
-    music_note_array = []
-    for x, y in coordinates:
-        music_note_array.append(get_note(x_cor= x, y_cor= y)["note_num"])
-
     track = 0
     channel = 0
     time = 0  # In beats
@@ -135,14 +133,43 @@ def song_gen(coordinates: list):
 
     MyMIDI = MIDIFile(1)
 
-    MyMIDI.addTempo(track, time, tempo)
+    for brush_cor in coordinates:
+        first_coordinate = brush_cor[0]
+        start_note = get_first_note(first_coordinate[0], first_coordinate[1])
+        new_notes = key_creator(start_note["note_str"])
 
-    for i, pitch in enumerate(music_note_array):
-        MyMIDI.addNote(track, channel, pitch, time + i / 2, duration, volume)
+        tempo = int(tempo_gen(brush_cor))
+
+        music_note_array = []
+        for x, y in brush_cor:
+            music_note_array.append(get_note(x_cor= x, y_cor= y)["note_num"])
+
+        MyMIDI.addTempo(track, time, tempo)
+
+        for i, pitch in enumerate(music_note_array):
+            MyMIDI.addNote(track, channel, pitch, time + i, duration, volume)
+
+        time += len(music_note_array)
 
     with open("sound_out.mid", "wb") as output_file:
         MyMIDI.writeFile(output_file)
 
 
-
-song_gen([(1, 2), (2, 4)])
+# ============= TESTING =============
+# import random
+#
+# total_music = []
+# def simulate_cursor_movement(duration):
+#     cursor_positions = []
+#     for second in range(duration):
+#         x = random.randint(-500, 500)
+#         y = random.randint(-500, 500)
+#         cursor_positions.append((x, y))
+#     total_music.append(cursor_positions)
+#
+# # Simulate cursor movement for 10 seconds
+# duration = 10
+# simulate_cursor_movement(duration)
+# simulate_cursor_movement(duration)
+# print(total_music)
+# song_gen(total_music)
