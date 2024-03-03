@@ -1,15 +1,16 @@
 from krita import *
 from .music_gen import *
-from .brush_events import InputInfo
+from .brush_events import exec_win
 
 
 def start_win():
     doc = Krita.instance().createDocument(1000, 1000, "Music_Gen", "RGBA", "U8", "", 120.0)
     Krita.instance().activeWindow().addView(doc)
 
-    song_gen([[(0,0), (1,2)]])  # dummy data
+    # song_gen([[(0,0), (1,2)]])  # dummy data
     # win = InputInfo()
     # win.show()
+    exec_win(Krita.instance().activeWindow())
 
 class ArtEchoes(Extension):
 
