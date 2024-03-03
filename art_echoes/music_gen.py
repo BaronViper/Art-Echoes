@@ -1,6 +1,7 @@
 from krita import Krita
 from midiutil import MIDIFile
 from mingus.core import scales
+from midi2audio import FluidSynth
 
 # For reference to convert notes to numbers
 notes = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
@@ -154,6 +155,16 @@ def song_gen(coordinates: list):
 
     with open(Krita.instance().getAppDataLocation() + "/sound_out.mid", "wb") as output_file:
         MyMIDI.writeFile(output_file)
+
+    # Define paths to MIDI and MP3 files
+    # midi_file = Krita.instance().getAppDataLocation() + "/sound_out.mid"
+    # mp3_file = Krita.instance().getAppDataLocation() + "/sound_out.mp3"
+    # print(mp3_file)
+    # print(midi_file)
+    #
+    # # Convert MIDI to MP3
+    # fs = FluidSynth()
+    # fs.midi_to_audio(midi_file, mp3_file)
 
 
 # ============= TESTING =============

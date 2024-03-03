@@ -86,7 +86,7 @@ class InputInfo(QPlainTextEdit):
     def eventFilter(self, obj, event):
         if isinstance(event, (QMouseEvent, QTabletEvent)):
             canvas = find_current_canvas()
-            # lets do something smart!
+            # let's do something smart!
             # Like sort big enum lists and print some text,
             # everytime mouse moves one pixel...
             modifiers = flag_to_human(event.modifiers(), Qt.KeyboardModifier, Qt)
