@@ -15,7 +15,7 @@ from PyQt5.QtGui import (
 
 from PyQt5.QtWidgets import (
     QPlainTextEdit,
-    QWidget
+    QWidget, QMessageBox, QApplication, QDialog, QHBoxLayout, QPushButton
 )
 
 total_coords = []
@@ -25,17 +25,20 @@ total_coords = []
 # by AkiR
 def find_current_canvas():
     app = Krita.instance()
-    q_window = app.activeWindow().qwindow()
-    q_stacked_widget = q_window.centralWidget()
-    q_mdi_area = q_stacked_widget.currentWidget()
-    q_mdi_sub_window = q_mdi_area.currentSubWindow()
-    view = q_mdi_sub_window.widget()
-    for c in view.children():
-        if c.metaObject().className() == 'KisCanvasController':
-            # first QWidget child of viewport should be canvas...
-            viewport = c.viewport()
-            canvas = viewport.findChild(QWidget)
-            return canvas
+    try:
+        q_window = app.activeWindow().qwindow()
+        q_stacked_widget = q_window.centralWidget()
+        q_mdi_area = q_stacked_widget.currentWidget()
+        q_mdi_sub_window = q_mdi_area.currentSubWindow()
+        view = q_mdi_sub_window.widget()
+        for c in view.children():
+            if c.metaObject().className() == 'KisCanvasController':
+                # first QWidget child of viewport should be canvas...
+                viewport = c.viewport()
+                canvas = viewport.findChild(QWidget)
+                return canvas
+    except:
+        return None
 
 
 # Debugging info function taken from
@@ -68,8 +71,6 @@ class InputInfo(QPlainTextEdit):
 
 
     def closeEvent(self, event):
-        # do these things when the window is closed
-        song_gen(total_coords)
         self.release_core_app()
         return super().closeEvent(event)
 
@@ -80,6 +81,8 @@ class InputInfo(QPlainTextEdit):
 
     def release_core_app(self):
         """ remove hook from core application. """
+        # do these things when the window is closed
+        song_gen([total_coords])
         q_app = QCoreApplication.instance()
         q_app.removeEventFilter(self)
 
@@ -93,20 +96,29 @@ class InputInfo(QPlainTextEdit):
             buttons = flag_to_human(event.buttons(), Qt.MouseButton, Qt)
             # Modification: Only do for left button down event and if
             # Krita canvas is the active canvas
-            if 'LeftButton' in buttons and canvas.isActiveWindow():
+            if 'LeftButton' in buttons and canvas and canvas.isActiveWindow():
                 # Add current coordinates to list
                 total_coords.append((event.x(),event.y()))
-                self.append_to_end(
-                        f'pos = {event.pos()}\n'
-                        f'modifiers = {modifiers}\n'
-                        f'buttons = {buttons}\n'
-                        f'mylist = {total_coords}\n')
+                # self.append_to_end(
+                #         f'pos = {event.pos()}\n'
+                #         f'modifiers = {modifiers}\n'
+                #         f'buttons = {buttons}\n'
+                #         f'mylist = {total_coords}\n')
         return super().eventFilter(obj, event)
 
-    def append_to_end(self, text):
-        self.moveCursor(QTextCursor.End)
-        self.insertPlainText(text)
+    # def append_to_end(self, text):
+    #     self.moveCursor(QTextCursor.End)
+    #     self.insertPlainText(text)
 
-def exec_win():
-    win = InputInfo()
-    win.show()
+# def exec_win(activeWin):
+    # canvas = find_current_canvas()
+    # layoutForButtons = QHBoxLayout()
+    # newButton = QPushButton("Press me")
+    # layoutForButtons.addWidget(newButton)
+
+win = InputInfo()
+    # win.setParent(canvas)
+    # win.setLayout(layoutForButtons)
+    # win.setWindowTitle("test")
+    # win.setVisible(True)
+win.show()
