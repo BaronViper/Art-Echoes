@@ -39,3 +39,5 @@ This project was developed for the BeaverHacks Winter2024 Hackathon by ArtofBugs
 ## Disclaimer
 
 This plugin is created for educational and entertainment purposes only. The quality and accuracy of the generated music may vary depending on the input artwork and parameters used.
+
+Some code taken from posts by [AkiR](https://krita-artists.org/u/akir/summary) on [krita-artists.org] as noted in code comments.
