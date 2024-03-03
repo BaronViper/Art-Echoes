@@ -83,16 +83,16 @@ def get_first_note(x_cor: int, y_cor: int) -> dict:
     """
 
 
-    start_note = notes[x_cor // 41]
-    if y_cor in range(-250, 251):
+    start_note = notes[x_cor // 83]
+    if y_cor in range(250, 750):
         start_octave = 4
-    elif y_cor in range(251, 501):
+    elif y_cor in range(750, 1000):
         start_octave = 5
     else:
         start_octave = 3
     return {"note_num": note_to_number(start_note, start_octave), "note_str": start_note, "octave": start_octave}
 
-def get_note(x_cor: int, y_cor: int) -> dict:
+def get_note(x_cor: int, y_cor: int, note_group: list) -> dict:
     """
     Get the note corresponding to some specified coordinate AFTER a key has been chosen.
 
@@ -102,10 +102,10 @@ def get_note(x_cor: int, y_cor: int) -> dict:
     :return: A dictionary of the note in str and int form, as well as its octave
     """
 
-    note = notes[x_cor // 71]
-    if y_cor in range(-250, 251):
+    note = note_group[x_cor // 142]
+    if y_cor in range(250, 750):
         octave = 4
-    elif y_cor in range(251, 501):
+    elif y_cor in range(750, 1000):
         octave = 5
     else:
         octave = 3
@@ -144,7 +144,7 @@ def song_gen(coordinates: list):
 
         music_note_array = []
         for x, y in brush_cor:
-            music_note_array.append(get_note(x_cor= x, y_cor= y)["note_num"])
+            music_note_array.append(get_note(x_cor= x, y_cor= y, note_group=new_notes)["note_num"])
 
         MyMIDI.addTempo(track, time, tempo)
 
