@@ -151,7 +151,7 @@ def song_gen(coordinates: list):
 
         time += len(music_note_array)
 
-    with open("sound_out.mid", "wb") as output_file:
+    with open("../sound_out.mid", "wb") as output_file:
         MyMIDI.writeFile(output_file)
 
 

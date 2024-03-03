@@ -1,0 +1,30 @@
+Note - Number
+C0 - 0
+C3 - 36
+C4 - 48 *
+C5 - 60
+C6 - 72
+
+
+X = (-500, 500)
+
+
+import music_gen
+import time
+
+total_coordinates = []
+
+
+def get_brush_coords():
+
+    current_brush_coordinates = []
+
+    while user is clicking:
+        current_coordinates = (get_x_cor, get_y_cor)
+        current_brush_coordinates.append(current_coordinates)
+        time.sleep(1)
+
+    total_coordinates.append(current_brush_coordinates)
+
+# SONG IS CREATED HERE
+music_gen.song_gen(total_coordinates)
