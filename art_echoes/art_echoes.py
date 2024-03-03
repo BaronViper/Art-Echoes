@@ -1,6 +1,6 @@
 from krita import *
 from .music_gen import *
-from .brush_events import exec_win
+from .brush_events import *
 
 
 def start_win():
@@ -11,7 +11,7 @@ def start_win():
     # win = InputInfo()
     # win.hook_core_app()
     # win.show()
-    exec_win(Krita.instance().activeWindow())
+    # exec_win(Krita.instance().activeWindow())
 
 
 class ArtEchoes(Extension):
