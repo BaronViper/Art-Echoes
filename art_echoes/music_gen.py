@@ -1,7 +1,7 @@
 from krita import Krita
 from midiutil import MIDIFile
-from mingus.core import scales
-from midi2audio import FluidSynth
+from mingus.core import scales, chords
+from itertools import groupby
 
 # For reference to convert notes to numbers
 notes = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
@@ -81,31 +81,30 @@ def get_first_note(x_cor: int, y_cor: int) -> dict:
 
     :return: A dictionary of the note in str and int form, as well as its octave
     """
-
-
     start_note = notes[x_cor // 83]
     if y_cor in range(250, 750):
         start_octave = 4
-    elif y_cor in range(750, 1000):
+    elif y_cor in range(751, 1000):
         start_octave = 5
     else:
         start_octave = 3
     return {"note_num": note_to_number(start_note, start_octave), "note_str": start_note, "octave": start_octave}
 
-def get_note(x_cor: int, y_cor: int, note_group: list) -> dict:
+def get_note(x_cor: int, y_cor: int, note_set: list) -> dict:
     """
     Get the note corresponding to some specified coordinate AFTER a key has been chosen.
 
+    :param note_set:
     :param x_cor: X-coordinate
     :param y_cor: Y-coordinate
 
     :return: A dictionary of the note in str and int form, as well as its octave
     """
 
-    note = note_group[x_cor // 142]
+    note = note_set[x_cor // 142]
     if y_cor in range(250, 750):
         octave = 4
-    elif y_cor in range(750, 1000):
+    elif y_cor in range(751, 1000):
         octave = 5
     else:
         octave = 3
@@ -144,14 +143,20 @@ def song_gen(coordinates: list):
 
         music_note_array = []
         for x, y in brush_cor:
-            music_note_array.append(get_note(x_cor= x, y_cor= y, note_group=new_notes)["note_num"])
+            music_note_array.append(get_note(x_cor= x, y_cor= y, note_set=new_notes)["note_num"])
 
         MyMIDI.addTempo(track, time, tempo)
 
-        for i, pitch in enumerate(music_note_array):
-            MyMIDI.addNote(track, channel, pitch, time + i, duration, volume)
+        grouped_music_array = [list(j) for i, j in groupby(music_note_array)]
+        current_time = 0
+        for note_group in grouped_music_array:
+            duration = 1  # Default duration for a single note
+            if len(note_group) > 1:
+                duration = 2 + len(note_group) / 2  # Adjusted duration for note groups
 
-        time += len(music_note_array)
+            for note in note_group:
+                MyMIDI.addNote(track, channel, note, current_time, duration, volume)
+                current_time += duration
 
     with open(Krita.instance().getAppDataLocation() + "/sound_out.mid", "wb") as output_file:
         MyMIDI.writeFile(output_file)
