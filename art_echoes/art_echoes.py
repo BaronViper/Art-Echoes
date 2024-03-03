@@ -1,11 +1,15 @@
 from krita import *
 from .music_gen import *
-from .brush_events import exec_win
+from .brush_events import InputInfo
 
 
-def test_win():
+def start_win():
     doc = Krita.instance().createDocument(1000, 1000, "Music_Gen", "RGBA", "U8", "", 120.0)
     Krita.instance().activeWindow().addView(doc)
+
+    song_gen([[(0,0), (1,2)]])  # dummy data
+    # win = InputInfo()
+    # win.show()
 
 class ArtEchoes(Extension):
 
@@ -18,7 +22,7 @@ class ArtEchoes(Extension):
 
     def createActions(self, window):
         action = window.createAction("art_echoes_id", "Art Echoes", "tools/scripts")
-        action.triggered.connect(test_win)
+        action.triggered.connect(start_win)
 
 # And add the extension to Krita's list of extensions:
 Krita.instance().addExtension(ArtEchoes(Krita.instance()))
