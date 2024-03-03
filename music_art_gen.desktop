@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Service
-ServiceTypes=Krita/PythonPlugin
-X-KDE-Library=music_art_gen
-X-Python-2-Compatible=false
-X-Krita-Manual=myPluginManual.html
-Name=Music Art Gen
-Comment=Creates music from art!
