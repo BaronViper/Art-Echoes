@@ -1,18 +1,17 @@
 from krita import *
 from .music_gen import *
-from .brush_events import InputInfo
-from PyQt5.QtWidgets import QWidget, QMessageBox
+from .brush_events import exec_win
 
 
 def start_win():
     doc = Krita.instance().createDocument(1000, 1000, "Music_Gen", "RGBA", "U8", "", 120.0)
     Krita.instance().activeWindow().addView(doc)
 
-    QMessageBox.information(QWidget(), "Art Echoes", "Welcome to Art Echoes, a plug-in to convert drawings to audio. Simply start by drawing on the canvas provided!")
-    #
+    # song_gen([[(0,0), (1,2)]])  # dummy data
     # win = InputInfo()
     # win.hook_core_app()
     # win.show()
+    exec_win(Krita.instance().activeWindow())
 
 
 class ArtEchoes(Extension):

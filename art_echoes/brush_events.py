@@ -15,7 +15,7 @@ from PyQt5.QtGui import (
 
 from PyQt5.QtWidgets import (
     QPlainTextEdit,
-    QWidget
+    QWidget, QMessageBox, QApplication, QDialog, QHBoxLayout, QPushButton
 )
 
 total_coords = []
@@ -68,8 +68,6 @@ class InputInfo(QPlainTextEdit):
 
 
     def closeEvent(self, event):
-        # do these things when the window is closed
-        song_gen(total_coords)
         self.release_core_app()
         return super().closeEvent(event)
 
@@ -80,6 +78,8 @@ class InputInfo(QPlainTextEdit):
 
     def release_core_app(self):
         """ remove hook from core application. """
+        # do these things when the window is closed
+        song_gen([total_coords])
         q_app = QCoreApplication.instance()
         q_app.removeEventFilter(self)
 
@@ -96,17 +96,26 @@ class InputInfo(QPlainTextEdit):
             if 'LeftButton' in buttons and canvas.isActiveWindow():
                 # Add current coordinates to list
                 total_coords.append((event.x(),event.y()))
-                self.append_to_end(
-                        f'pos = {event.pos()}\n'
-                        f'modifiers = {modifiers}\n'
-                        f'buttons = {buttons}\n'
-                        f'mylist = {total_coords}\n')
+                # self.append_to_end(
+                #         f'pos = {event.pos()}\n'
+                #         f'modifiers = {modifiers}\n'
+                #         f'buttons = {buttons}\n'
+                #         f'mylist = {total_coords}\n')
         return super().eventFilter(obj, event)
 
-    def append_to_end(self, text):
-        self.moveCursor(QTextCursor.End)
-        self.insertPlainText(text)
+    # def append_to_end(self, text):
+    #     self.moveCursor(QTextCursor.End)
+    #     self.insertPlainText(text)
 
-def exec_win():
+def exec_win(activeWin):
+    # canvas = find_current_canvas()
+    # layoutForButtons = QHBoxLayout()
+    # newButton = QPushButton("Press me")
+    # layoutForButtons.addWidget(newButton)
+
     win = InputInfo()
+    # win.setParent(canvas)
+    # win.setLayout(layoutForButtons)
+    # win.setWindowTitle("test")
+    # win.setVisible(True)
     win.show()
