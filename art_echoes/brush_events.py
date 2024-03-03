@@ -82,7 +82,7 @@ class InputInfo(QPlainTextEdit):
     def release_core_app(self):
         """ remove hook from core application. """
         # do these things when the window is closed
-        song_gen([total_coords])
+        if total_coords: song_gen([total_coords])
         q_app = QCoreApplication.instance()
         q_app.removeEventFilter(self)
 

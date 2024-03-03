@@ -20,10 +20,11 @@ Art Echoes is a Krita plugin developed for the BeaverHacks Winter2024 Hackathon.
 
 ## Usage
 
-1. Start drawing on the pre-defined frame.
+1. After installation, on Krita startup, a small pop-up belonging to Krita should appear. This can be ignored.
+2. Go to `Tools > Scripts` and run `Art Echoes` to open the pre-defined 1000 x 1000 px frame.
 2. Use your brush strokes as you normally would.
-3. Once done, go to `Tools > Scripts > Art Echoes` to convert your artwork into music.
-4. A MIDI file named `sound_out.mid` will be generated in the same directory as your artwork.
+3. Once done, close the small pop-up to convert your artwork into music.
+4. A MIDI file named `sound_out.mid` will be generated in the Krita resource folder from step 3 of the installation process.
 
 ## Dependencies
 
@@ -38,3 +39,5 @@ This project was developed for the BeaverHacks Winter2024 Hackathon by ArtofBugs
 ## Disclaimer
 
 This plugin is created for educational and entertainment purposes only. The quality and accuracy of the generated music may vary depending on the input artwork and parameters used.
+
+Some code taken from posts by [AkiR](https://krita-artists.org/u/akir/summary) on [krita-artists.org] as noted in code comments.
