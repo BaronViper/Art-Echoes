@@ -1,4 +1,4 @@
-from music_gen import song_gen
+from .music_gen import song_gen
 
 from krita import Krita
 
@@ -107,6 +107,6 @@ class InputInfo(QPlainTextEdit):
         self.moveCursor(QTextCursor.End)
         self.insertPlainText(text)
 
-
-win = InputInfo()
-win.show()
+def exec_win():
+    win = InputInfo()
+    win.show()
