@@ -2,6 +2,8 @@
 
 Art Echoes is a Krita plugin developed for the BeaverHacks Winter2024 Hackathon. It converts your brush strokes into musical compositions, creating a unique auditory experience based on your artwork. The generated music is saved in the MIDI format as "sound_out.mid".
 
+![Art Echoes](assets/banner.png)
+
 ## Features
 
 - Convert brush strokes to music.
