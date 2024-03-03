@@ -135,7 +135,11 @@ def song_gen(coordinates: list):
     MyMIDI = MIDIFile(1)
 
     for brush_cor in coordinates:
-        first_coordinate = brush_cor[0]
+        try:
+            first_coordinate = brush_cor[0]
+        except Exception as e:
+            print(coordinates)
+            raise e
         start_note = get_first_note(first_coordinate[0], first_coordinate[1])
         new_notes = key_creator(start_note["note_str"])
 

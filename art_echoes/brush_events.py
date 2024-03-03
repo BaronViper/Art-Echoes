@@ -2,7 +2,10 @@ from .music_gen import song_gen
 
 from krita import Krita
 
-from PyQt5.QtCore import (
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QWidget, QOpenGLWidget
+
+"""from PyQt5.QtCore import (
     Qt,
     QCoreApplication
 )
@@ -16,11 +19,11 @@ from PyQt5.QtGui import (
 from PyQt5.QtWidgets import (
     QPlainTextEdit,
     QWidget, QMessageBox, QApplication, QDialog, QHBoxLayout, QPushButton
-)
+)"""
 
 total_coords = []
 
-# Find the current Krita canvas; function taken from
+"""# Find the current Krita canvas; function taken from
 # https://krita-artists.org/t/clicking-with-scripts/26150/5
 # by AkiR
 def find_current_canvas():
@@ -35,10 +38,10 @@ def find_current_canvas():
             # first QWidget child of viewport should be canvas...
             viewport = c.viewport()
             canvas = viewport.findChild(QWidget)
-            return canvas
+            return canvas"""
 
 
-# Debugging info function taken from
+"""# Debugging info function taken from
 # https://krita-artists.org/t/to-monitor-the-cursor-position/75694/4
 # by AkiR
 def flag_to_human(flag, enum_cls, owner):
@@ -55,9 +58,67 @@ def flag_to_human(flag, enum_cls, owner):
             flag_list.append(name)
             flag_value -= v
     return flag_list
+"""
 
 
-# Use this window to show debugging info about left mouse events
+application = Krita.instance()
+
+def find_current_canvas():
+    if not Krita.instance().activeWindow():
+        return None
+    q_window = Krita.instance().activeWindow().qwindow()
+    q_stacked_widget = q_window.centralWidget()
+    canvas = q_stacked_widget.findChild(QOpenGLWidget)
+    return canvas
+
+class eventWidget(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        central_widget = QtWidgets.QWidget()
+        self.setCentralWidget(central_widget)
+
+        self.canvas = find_current_canvas()
+
+        self.q_app = QApplication.instance()
+        self.q_app.installEventFilter(self)
+
+        self.show()
+
+    def eventFilter(self, obj, event):
+
+        if self.canvas.isActiveWindow():
+            # if obj == self.canvas:
+
+            if event.button() == Qt.LeftButton:
+
+                total_coords.append((event.x(),event.y())) 
+
+                return True
+        return False
+
+    def closeEvent(self, event):
+        song_gen([total_coords])
+        self.release_event()
+
+    def release_event(self):
+        if self.canvas: self.canvas.removeEventFilter(self)
+
+widget = eventWidget()
+widget.show()
+
+
+
+
+
+
+
+
+
+
+
+
+"""# Use this window to show debugging info about left mouse events
 # Function adapted from
 # https://krita-artists.org/t/to-monitor-the-cursor-position/75694/4
 # by AkiR
@@ -72,12 +133,12 @@ class InputInfo(QPlainTextEdit):
         return super().closeEvent(event)
 
     def hook_core_app(self):
-        """ add hook to core application. """
+        add hook to core application.
         q_app = QCoreApplication.instance()
         q_app.installEventFilter(self)
 
     def release_core_app(self):
-        """ remove hook from core application. """
+        remove hook from core application.
         # do these things when the window is closed
         song_gen([total_coords])
         q_app = QCoreApplication.instance()
@@ -119,3 +180,4 @@ def exec_win(activeWin):
     # win.setWindowTitle("test")
     # win.setVisible(True)
     win.show()
+"""
