@@ -1,3 +1,4 @@
+from krita import Krita
 from midiutil import MIDIFile
 from mingus.core import scales
 
@@ -151,7 +152,7 @@ def song_gen(coordinates: list):
 
         time += len(music_note_array)
 
-    with open("../sound_out.mid", "wb") as output_file:
+    with open(Krita.instance().getAppDataLocation() + "/sound_out.mid", "wb") as output_file:
         MyMIDI.writeFile(output_file)
 
 
