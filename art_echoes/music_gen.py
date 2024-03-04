@@ -55,9 +55,10 @@ def number_to_note(num: int) -> str:
 
     :return: Note derived from number
     """
-
-    octave = num // 12
-    letter = notes[num % 12]
+    num %= 1000
+    div = len(notes)
+    octave = int(num // div)
+    letter = notes[int(num % div)]
     note =  letter + str(octave)
     return note
 
@@ -81,7 +82,10 @@ def get_first_note(x_cor: int, y_cor: int) -> dict:
 
     :return: A dictionary of the note in str and int form, as well as its octave
     """
-    start_note = notes[x_cor // 83]
+    x_cor %= 1000
+    y_cor %= 1000
+    div = 1000 / len(notes)
+    start_note = notes[int(x_cor // div)]
     if y_cor in range(250, 750):
         start_octave = 4
     elif y_cor in range(751, 1000):
@@ -100,8 +104,10 @@ def get_note(x_cor: int, y_cor: int, note_set: list) -> dict:
 
     :return: A dictionary of the note in str and int form, as well as its octave
     """
-
-    note = note_set[x_cor // 142]
+    x_cor %= 1000
+    y_cor %= 1000
+    div = 1000 / 7 # notes in a scale
+    note = note_set[int(x_cor // div)]
     if y_cor in range(250, 750):
         octave = 4
     elif y_cor in range(751, 1000):
@@ -152,7 +158,7 @@ def song_gen(coordinates: list):
         for note_group in grouped_music_array:
             duration = 1  # Default duration for a single note
             if len(note_group) > 1:
-                duration = 2 + len(note_group) / 200  # Adjusted duration for note groups
+                duration = 1 + len(note_group) / 2000  # Adjusted duration for note groups
 
             for note in note_group:
                 MyMIDI.addNote(track, channel, note, current_time, duration, volume)
