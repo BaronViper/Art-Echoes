@@ -159,7 +159,7 @@ def song_gen(coordinates: list):
         for note_group in grouped_music_array:
             duration = 1  # Default duration for a single note
             if len(note_group) > 1:
-                duration = 2 + len(note_group) / 200  # Adjusted duration for note groups
+                duration = 1 + len(note_group) / 2000  # Adjusted duration for note groups
 
             for note in note_group:
                 MyMIDI.addNote(track, channel, note, current_time, duration, volume)
