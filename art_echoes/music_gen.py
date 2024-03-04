@@ -106,8 +106,7 @@ def get_note(x_cor: int, y_cor: int, note_set: list) -> dict:
     """
     x_cor %= 1000
     y_cor %= 1000
-    div = 1000 / len(note_set)
-    # note = note_set[x_cor // 142]
+    div = 1000 / 7 # notes in a scale
     note = note_set[int(x_cor // div)]
     if y_cor in range(250, 750):
         octave = 4
